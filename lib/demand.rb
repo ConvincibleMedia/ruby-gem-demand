@@ -4,8 +4,9 @@ require 'boolean'
 #require 'pry'
 
 module Demand
+    extend self
 
-    def self.demand(var, default = nil, _type = nil)
+    def demand(var, default = nil, _type = nil)
 
         # If type specified, must either be a class or module
         # Otherwise, get the class of whatever was passed
