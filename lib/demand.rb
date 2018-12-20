@@ -1,7 +1,7 @@
 require 'demand/version'
 require 'facets/kernel/blank'
 require 'boolean'
-require 'pry'
+#require 'pry'
 
 module Demand
 
