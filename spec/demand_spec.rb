@@ -149,16 +149,6 @@ RSpec.describe Demand do
         expect(Demand::demand(a_string, 'default', String) {|s| s * 2}).to eq(a_string * 2)
     end
 
-    # Constraints
-
-    it "gets 'A long story' when expecting String starting with 'A'" do
-        expect(Demand::demand('A long story', 'default', String, {start_with?: 'A'})).to eq('A long story')
-    end
-
-    it "returns default when constraint is invalid" do
-        expect(Demand::demand('A long story', 'default', String, {doesnt_exist?: 'A'})).to eq('default')
-    end
-
     # Use cases
 
     it "replaces `if !a.nil? then x = a end` when a is a String" do

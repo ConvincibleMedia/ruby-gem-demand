@@ -5,16 +5,16 @@ require 'pry'
 
 module Demand
 
-    def self.demand(var, default = nil, t = nil, constraints = nil)
+    def self.demand(var, default = nil, _type = nil)
 
         # If type specified, must either be a class or module
         # Otherwise, get the class of whatever was passed
 
-        if (t != nil)
-            if (t.is_a?(Class) || t.is_a?(Module))
-                type = t
+        if (_type != nil)
+            if (_type.is_a?(Class) || _type.is_a?(Module))
+                type = _type
             else
-                type = type.class
+                type = _type.class
             end
         end
 
@@ -30,21 +30,7 @@ module Demand
             # Variable is not blank
             # Do we need to check its class too?
             elsif (type != nil)
-                if var.is_a?(type)
-                    # Var is the right type
-                    # Do we need to check constraints?
-                    if constraints.is_a?(Hash) && constraints.size > 0
-                        # If any constraint fails, return default
-                        constraints.each { |method, arg|
-                            if !arg.is_a?(Array) then arg = [arg] end
-                            if !method.is_a?(Symbol) then method = method.to_s.to_sym end
-
-                            unless var.respond_to?(method) && var.send(method, *arg)
-                                return default
-                            end
-                        }
-                    end
-                else
+                unless var.is_a?(type)
                     return default
                 end
             end
