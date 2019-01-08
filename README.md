@@ -2,7 +2,7 @@
 
 **Adds a top level `demand(variable)` method to return a variable if it's present** and optionally of the right type. Otherwise, a default or nil is returned.
 
-**`demand()`` replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call.
+**`demand()` replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call.
 
 So, instead of:
 
