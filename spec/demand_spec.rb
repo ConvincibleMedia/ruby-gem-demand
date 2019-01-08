@@ -131,8 +131,12 @@ RSpec.describe Demand do
         expect(Demand::demand(0, 'default', Integer)).to eq(0)
     end
 
-    it "gets 0 when expecting Numeric" do
-        expect(Demand::demand(0, 'default', Numeric)).to eq(0)
+    it "gets (3.0 / 2.0) = 1.5 when expecting Float" do
+        expect(Demand::demand(3.0 / 2.0, 'default', Float)).to eq(1.5)
+    end
+
+    it "gets 1 when expecting Numeric" do
+        expect(Demand::demand(1, 'default', Numeric)).to eq(1)
     end
 
     it "gets array when expecting Array" do
