@@ -19,7 +19,7 @@ a = demand(x, [0], Array)
 And instead of:
 
 ```ruby
-if !x.nil? && !x.empty?
+if !x.nil? && x.strip.length > 0
     a = x
 end
 ```
