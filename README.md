@@ -28,11 +28,7 @@ You can:
 
 ```ruby
 demand(x) {|x| a = x}
-```
-
-## Explanation
-
-Think of this as "demanding" the variable. Because you have demanded so forcefully you are guaranteed to get what you want.
+``` 
 
 ## Usage
 
@@ -63,6 +59,7 @@ If you actually want your variable to be `nil` (i.e. you want the default value 
 
 ```ruby
 expected_to_be_nil = nil
+
 demand(expected_to_be_nil, 'Not nil') #=> 'Not nil'
 demand(expected_to_be_nil, 'Not nil', NilClass) #=> nil (that is, expected_to_be_nil)
 ```
@@ -77,9 +74,9 @@ If you specify a Class or Module in the third parameter, the variable must be of
 x = 'Hello world'
 y = false
 
-demand(x, 'Not a String', String) #=> 'Hello world' (that is, x)
-demand(y, 'Not a String', String) #=> 'Not a String'
-demand(y, nil, Boolean) #=> false (that is, y)
+demand(x, 'Not the right type', String) #=> 'Hello world' (that is, x)
+demand(y, 'Not the right type', String) #=> 'Not the right type'
+demand(y, 'Not the right type', Boolean) #=> false (that is, y)
 ```
 
 The type `Boolean` is also made available when using this gem (via the [Boolean](https://github.com/RISCfuture/boolean) gem). This has the effect that `true` and `false` include `Boolean`, so we can check if something `is_a?(Boolean)` which will pass just for `true` and `false` values.
