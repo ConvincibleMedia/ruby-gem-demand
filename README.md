@@ -7,7 +7,7 @@
 | Instead of | You can |
 | --- | --- |
 | `a = (x.is_a?(Array) && !x.empty?) ? x : [0]` | `a = demand(x, [0], Array)` |
-| `a = x if !x.nil? && x.strip.length > 0`      | `demand(x) {|x| a = x}`     |
+| `a = x if !x.nil? && x.strip.length > 0`      | `demand(x) {\|x\| a = x}`   |
 
 ## Usage
 
