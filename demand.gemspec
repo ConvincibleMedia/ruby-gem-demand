@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
     spec.authors       = ["Convincible"]
     spec.email         = ["development@convincible.media"]
 
-    spec.summary       = "Adds a top level demand(variable) method to return a variable just if it exists, is present and optionally is of the right type. Otherwise, a default or nil is returned."
-    spec.description   = "Adds a top level demand(variable) method to return a variable just if it exists, is present and optionally is of the right type. Otherwise, a default or nil is returned. demand() replaces long lines of repetitive code to check for nil?/present?/empty?, etc., hard-to-read ternary operators (?:) or if statements. A block can be specified, which only runs (with the variable) if the check passes."
+    spec.summary       = "Adds a top level demand(variable) method to return a variable if it's present and optionally of the right type. Otherwise, a default or nil is returned."
+    spec.description   = "Adds a top level demand(variable) method to return a variable if it's present and optionally of the right type. Otherwise, a default or nil is returned. demand() replaces long lines of repetitive code to check for nil?/present?/empty?, etc., hard-to-read ternary operators (?:) and if statements. A block can be specified, which only runs (with the variable) if the check passes."
     spec.homepage      = "https://github.com/ConvincibleMedia/ruby-gem-demand"
 
     # Specify which files should be added to the gem when it is released.

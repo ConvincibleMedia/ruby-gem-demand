@@ -1,22 +1,32 @@
 # Demand (Ruby Gem)
 
-**Adds a top level `demand(variable)` method to return a variable if it exists**, is present and optionally is of the right type. Otherwise, a default or nil is returned.
+**Adds a top level `demand(variable)` method to return a variable if it's present** and optionally of the right type. Otherwise, a default or nil is returned.
 
-**demand() replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) or `if` statements.
+**`demand()`` replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call.
+
+So, instead of:
 
 ```ruby
-# Without demand()
-if x.is_a?(Array) && !x.empty?
-    a = x
-else
-    a = [0]
-end
-# With demand()
-a = demand(x, [0], Array)
+a = (x.is_a?(Array) && !x.empty?) ? x : [0]
+```
 
-# Without demand()
-if !x.nil? && !x.empty? then a = x end
-# With demand()
+You can:
+
+```ruby
+a = demand(x, [0], Array)
+```
+
+And instead of:
+
+```ruby
+if !x.nil? && !x.empty?
+    a = x
+end
+```
+
+You can:
+
+```ruby
 demand(x) {|x| a = x}
 ```
 
