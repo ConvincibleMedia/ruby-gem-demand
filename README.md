@@ -4,10 +4,11 @@
 
 **`demand()` replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call.
 
-| Instead of | You can |
-| --- | --- |
-| `a = (x.is_a?(Array) && !x.empty?) ? x : [0]` | `a = demand(x, [0], Array)` |
-| `a = x if !x.nil? && x.strip.length > 0`      | `demand(x) {\|x\| a = x}`   |
+| So, you can...              | ...instead of stuff like                       |
+| --------------------------- | ---------------------------------------------- |
+| `demand(x)`                 | `(x.present? ? x : nil)`                       |
+| `a = demand(x, [0], Array)` | `a = (x.is_a?(Array) && !x.empty?) ? x : [0]`  |
+| `demand(x) {\|x\| a = x}`   | `a = x if !x.nil? && x.strip.length > 0`       |
 
 ## Usage
 
