@@ -57,7 +57,7 @@ By *present* here we mean that:
 * If it is an Array or Hash, it isn't empty
 * If it is a String, it isn't empty or just whitespace
 
-(This uses the Facets gem's `blank?` method, but overrides it evaluating `false` as blank.)
+(This uses the [Facets](https://github.com/rubyworks/facets) gem's `blank?` method, but overrides it evaluating `false` as blank.)
 
 If you actually want your variable to be `nil` (i.e. you want the default value when the variable is *not* nil), specify the class you're looking for as `NilClass`):
 
@@ -82,7 +82,7 @@ demand(y, 'Not a String', String) #=> 'Not a String'
 demand(y, nil, Boolean) #=> false (that is, y)
 ```
 
-The type `Boolean` is also made available when using this gem (via the Boolean gem). This has the effect that `true` and `false` include `Boolean`, so we can check if something `is_a?(Boolean)` which will pass just for `true` and `false` values.
+The type `Boolean` is also made available when using this gem (via the [Boolean](https://github.com/RISCfuture/boolean) gem). This has the effect that `true` and `false` include `Boolean`, so we can check if something `is_a?(Boolean)` which will pass just for `true` and `false` values.
 
 ### If variable, yield and run block
 
