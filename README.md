@@ -1,35 +1,86 @@
-# Demand
+# Demand (Ruby Gem)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/demand`. To experiment with that code, run `bin/console` for an interactive prompt.
+**Adds a top level `demand(variable)` method to return a variable if it exists**, is present and optionally is of the right type. Otherwise, a default or nil is returned.
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
+**demand() replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) or `if` statements.
 
 ```ruby
-gem 'demand'
+# Without demand()
+if x.is_a?(Array) && !x.empty?
+    a = x
+else
+    a = [0]
+end
+# With demand()
+a = demand(x, [0], Array)
+
+# Without demand()
+if !x.nil? && !x.empty? then a = x end
+# With demand()
+demand(x) {|x| a = x}
 ```
 
-And then execute:
+## Explanation
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install demand
+Think of this as "demanding" the variable. Because you have demanded so forcefully you are guaranteed to get what you want.
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'demand'
+```
 
-## Development
+### If variable present, return it
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+x = false
+y = '   '
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+demand(x) #=> false (that is, x)
+demand(y) #=> nil
+demand(y, 'Not present') #=> 'Not present'
+```
 
-## Contributing
+By *present* here we mean that:
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/demand.
+* The variable is not equal to `nil`
+* If it is an Array or Hash, it isn't empty
+* If it is a String, it isn't empty or just whitespace
+
+(This uses the Facets gem's `blank?` method, but overrides it evaluating `false` as blank.)
+
+If you actually want your variable to be `nil` (i.e. you want the default value when the variable is *not* nil), specify the class you're looking for as `NilClass`):
+
+```ruby
+expected_to_be_nil = nil
+demand(expected_to_be_nil, 'Not nil') #=> 'Not nil'
+demand(expected_to_be_nil, 'Not nil', NilClass) #=> nil (that is, expected_to_be_nil)
+```
+
+If you want an Array or Hash and don't mind if an empty one is passed, just specify an empty Array or Hash as the default value.
+
+### If variable present and of type, return it
+
+If you specify a Class or Module in the third parameter, the variable must be of this Class or include this Module.
+
+```ruby
+x = 'Hello world'
+y = false
+
+demand(x, 'Not a String', String) #=> 'Hello world' (that is, x)
+demand(y, 'Not a String', String) #=> 'Not a String'
+demand(y, nil, Boolean) #=> false (that is, y)
+```
+
+The type `Boolean` is also made available when using this gem (via the Boolean gem). This has the effect that `true` and `false` include `Boolean`, so we can check if something `is_a?(Boolean)` which will pass just for `true` and `false` values.
+
+### If variable, yield and run block
+
+If a block is specified, this will run only if the variable passes all the conditions. The variable is yielded to the block and also still returned by the method.
+
+```ruby
+x = 5
+
+demand(x, nil, Integer) {|x| puts x * 2 } #=> returns: 5; puts: 10
+demand(x, nil, String) {|x| puts 'Hello' } #=> nil; puts is not run
+```
