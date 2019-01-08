@@ -4,31 +4,10 @@
 
 **`demand()` replaces long lines of repetitive code** to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call.
 
-So, instead of:
-
-```ruby
-a = (x.is_a?(Array) && !x.empty?) ? x : [0]
-```
-
-You can:
-
-```ruby
-a = demand(x, [0], Array)
-```
-
-And instead of:
-
-```ruby
-if !x.nil? && x.strip.length > 0
-    a = x
-end
-```
-
-You can:
-
-```ruby
-demand(x) {|x| a = x}
-``` 
+| Instead of | You can |
+| --- | --- |
+| `a = (x.is_a?(Array) && !x.empty?) ? x : [0]` | `a = demand(x, [0], Array)` |
+| `a = x if !x.nil? && x.strip.length > 0`      | `demand(x) {|x| a = x}`     |
 
 ## Usage
 
