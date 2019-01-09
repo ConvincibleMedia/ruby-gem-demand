@@ -7,6 +7,7 @@
 | So, you can...              | ...instead of stuff like                       |
 | --------------------------- | ---------------------------------------------- |
 | `demand(x)`                 | `(x.present? ? x : nil)`                       |
+| `demand(x, y)`              | `(x.present? ? x : y)`                         |
 | `a = demand(x, [0], Array)` | `a = (x.is_a?(Array) && !x.empty?) ? x : [0]`  |
 | `demand(x) {\|x\| a = x}`   | `a = x if !x.nil? && x.strip.length > 0`       |
 
