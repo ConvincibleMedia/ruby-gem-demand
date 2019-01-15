@@ -1,5 +1,5 @@
 require 'demand/version'
-require 'facets/kernel/blank'
+require 'active_support/core_ext/object/blank'
 require 'boolean'
 # require 'pry'
 

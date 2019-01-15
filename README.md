@@ -34,7 +34,7 @@ By *present* here we mean that:
 * If it is an Array or Hash, it isn't empty
 * If it is a String, it isn't empty or just whitespace
 
-(This uses the [Facets](https://github.com/rubyworks/facets) gem's `blank?` method, but overrides it evaluating `false` as blank.)
+(This uses ActiveSupport's `blank?` method, but overrides it evaluating `false` as blank.)
 
 If you actually want your variable to be `nil` (i.e. you want the default value when the variable is *not* nil), specify the class you're looking for as `NilClass`):
 
