@@ -9,7 +9,7 @@ module Demand
     attr_accessor :RETURN_YIELD
 end
 
-# Checks if a passed variable is present and as expected. If so, returns and optionally yields it. Otherwise, a default is returned. The check will fail for empty arrays, hashes and strings (including whitespace strings).
+# Checks if a passed variable is present and as expected. If so, returns and optionally yields it. Otherwise, a default is returned. The check will fail for empty arrays, hashes and strings (including whitespace strings). If you want the check to pass just if the variable is nil, specify type = NilClass
 #
 # @param var The variable you wish to check.
 # @param default The return value you want if the check fails.
@@ -18,7 +18,7 @@ end
 # @return The original variable if the check passes. Otherwise, the default value is returned.
 # @yield [var] If a block is given and the check passes, the original variable is also yielded to the block.
 #
-# @note If you want the check to pass just if the variable is nil, specify type = NilClass
+# @note This is added as a top level method to the global scope when requiring this gem.
 #
 def demand(var, default = nil, type = nil)
 
