@@ -1,6 +1,6 @@
 # Demand (Ruby Gem)
 
-**Return a variable if it's present** (and optionally of the right type), otherwise, a default or nil. Adds a top level demand() method, which replaces long lines of repetitive code to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call:
+**Return a variable if it's present** (and optionally of the right type), otherwise, a default or nil. Adds a top level `demand()` method, which replaces long lines of repetitive code to check for `nil?`/`present?`/`empty?`, etc., hard-to-read ternary operators (`?:`) and chunky `if` statements. Instead you can make a simple method call:
 
 | So, you can...              | ...instead of stuff like                       |
 | --------------------------- | ---------------------------------------------- |
@@ -73,11 +73,11 @@ demand(x, nil, String) {|x| puts 'Hello' } #=> nil; puts is not run
 
 ## Options
 
-Not really recommended, but you can adjust how the demand() method works by setting `Demand::YIELD_DEFAULT` and `Demand::RETURN_YIELD`.
+Not really recommended, but you can adjust how the `demand()` method works by setting `Demand::YIELD_DEFAULT` and `Demand::RETURN_YIELD`.
 
 | Option        | Default | Explanation |
 | ------------- | ------- | ----------- |
-| YIELD_DEFAULT | false   | If true, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
-| RETURN_YIELD  | false   | If true, the return value of the passed block (if run) will be the return value for the main method itself. |
+| YIELD_DEFAULT | `false` | If `true`, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
+| RETURN_YIELD  | `false` | If `true`, the return value of the passed block (if run) will be the return value for the main method itself. |
 
 Once set, these switches change how all further calls to `demand()` behave. The switches are included for flexibility to developer preferences, but use with caution: things could get confusing quickly. Probably if you feel like you need these, `demand()` may not be the right tool.
