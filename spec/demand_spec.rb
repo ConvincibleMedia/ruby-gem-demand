@@ -33,6 +33,10 @@ RSpec.describe Demand do
         Demand::RETURN_YIELD = true
         expect(Demand::YIELD_DEFAULT).to eq(true)
         expect(Demand::RETURN_YIELD).to eq(true)
+        Demand::YIELD_DEFAULT = false
+        Demand::RETURN_YIELD = false
+        expect(Demand::YIELD_DEFAULT).to eq(false)
+        expect(Demand::RETURN_YIELD).to eq(false)
     end
 
     # Basic fallbacks
@@ -191,6 +195,22 @@ RSpec.describe Demand do
         x = "".freeze
         demand(a_nil) {|a| x = a }
         expect(x).to eq("")
+    end
+
+    # Switches work
+
+    it "yields default when Demand::YIELD_DEFAULT turned on" do
+        Demand::YIELD_DEFAULT = true
+        x = 'test'
+        expect(demand(a_nil, a_string) {|s| x += s}).to eq(a_string)
+        expect(x).to eq('test' + a_string)
+        Demand::YIELD_DEFAULT = false
+    end
+
+    it "returns the yield result when Demand::RETURN_YIELD turned on" do
+        Demand::RETURN_YIELD = true
+        expect(demand(a_string) {|s| s + 'test'}).to eq(a_string + 'test')
+        Demand::RETURN_YIELD = false
     end
 
 end

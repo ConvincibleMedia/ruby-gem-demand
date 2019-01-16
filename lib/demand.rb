@@ -33,30 +33,35 @@ def demand(var, default = nil, type = nil)
     end
 
     # Check the var
+    result = var; check = true
     begin
         # Edge case - you want the variable to be of type NilClass
         if var == nil
             unless t == NilClass
-                return default
+                result = default; check = false
             end
         # Is the variable blank? - not including false
         elsif !(var.present? || var == false) # Override false == blank
-            return default
+            result = default; check = false
         # Variable is not blank
         # Do we need to check its class too?
         elsif (t != nil)
             unless var.is_a?(t)
-                return default
+               result = default; check = false
             end
         end
     rescue
-        return default
+        result = default; check = false
     end
 
     # All checks have passed by this point
-    yield(var) if block_given?
-
-    # Original variable returned
-    return var
+    if block_given? && (check || Demand::YIELD_DEFAULT)
+        if Demand::RETURN_YIELD
+            return yield(result)
+        else
+            yield(result)
+        end
+    end
+    return result
 
 end
