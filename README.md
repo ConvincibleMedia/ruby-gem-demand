@@ -75,7 +75,9 @@ demand(x, nil, String) {|x| puts 'Hello' } #=> nil; puts is not run
 
 Not really recommended, but you can adjust how the demand() method works by setting `Demand::YIELD_DEFAULT` and `Demand::RETURN_YIELD`.
 
-| YIELD_DEFAULT | Default: false | If true, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
-| RETURN_YIELD  | Default: false | If true, the return value of the passed block (if run) will be the return value for the main method itself. |
+| Option        | Default | Explanation |
+| ------------- | ------- | ----------- |
+| YIELD_DEFAULT | false   | If true, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
+| RETURN_YIELD  | false   | If true, the return value of the passed block (if run) will be the return value for the main method itself. |
 
 Once set, these switches change how all further calls to `demand()` behave. The switches are included for flexibility to developer preferences, but use with caution: things could get confusing quickly. Probably if you feel like you need these, `demand()` may not be the right tool.
