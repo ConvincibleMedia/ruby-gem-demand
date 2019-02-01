@@ -3,10 +3,11 @@ require 'boolean'
 # require 'pry'
 
 module Demand
-    YIELD_DEFAULT = false
-    RETURN_YIELD = false
-    attr_accessor :YIELD_DEFAULT
-    attr_accessor :RETURN_YIELD
+    OPTIONS = {
+        yield_default: false,
+        return_yield: false
+    }
+    attr_accessor :OPTIONS
 end
 
 # Checks if a passed variable is present and as expected. If so, returns and optionally yields it. Otherwise, a default is returned. The check will fail for empty arrays, hashes and strings (including whitespace strings). If you want the check to pass just if the variable is nil, specify type = NilClass
@@ -55,8 +56,8 @@ def demand(var, default = nil, type = nil)
     end
 
     # All checks have passed by this point
-    if block_given? && (check || Demand::YIELD_DEFAULT)
-        if Demand::RETURN_YIELD
+    if block_given? && (check || Demand::OPTIONS[:yield_default])
+        if Demand::OPTIONS[:return_yield]
             return yield(result)
         else
             yield(result)

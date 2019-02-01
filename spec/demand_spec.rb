@@ -24,19 +24,19 @@ RSpec.describe Demand do
     # Switches
 
     it "lets you read options switches for how the function works" do
-        expect(Demand::YIELD_DEFAULT).not_to eq(true)
-        expect(Demand::RETURN_YIELD).not_to eq(true)
+        expect(Demand::OPTIONS[:yield_default]).not_to eq(true)
+        expect(Demand::OPTIONS[:return_yield]).not_to eq(true)
     end
 
     it "lets you set options switches for how the function works" do
-        Demand::YIELD_DEFAULT = true
-        Demand::RETURN_YIELD = true
-        expect(Demand::YIELD_DEFAULT).to eq(true)
-        expect(Demand::RETURN_YIELD).to eq(true)
-        Demand::YIELD_DEFAULT = false
-        Demand::RETURN_YIELD = false
-        expect(Demand::YIELD_DEFAULT).to eq(false)
-        expect(Demand::RETURN_YIELD).to eq(false)
+        Demand::OPTIONS[:yield_default] = true
+        Demand::OPTIONS[:return_yield] = true
+        expect(Demand::OPTIONS[:yield_default]).to eq(true)
+        expect(Demand::OPTIONS[:return_yield]).to eq(true)
+        Demand::OPTIONS[:yield_default] = false
+        Demand::OPTIONS[:return_yield] = false
+        expect(Demand::OPTIONS[:yield_default]).to eq(false)
+        expect(Demand::OPTIONS[:return_yield]).to eq(false)
     end
 
     # Basic fallbacks
@@ -200,17 +200,17 @@ RSpec.describe Demand do
     # Switches work
 
     it "yields default when Demand::YIELD_DEFAULT turned on" do
-        Demand::YIELD_DEFAULT = true
+        Demand::OPTIONS[:yield_default] = true
         x = 'test'
         expect(demand(a_nil, a_string) {|s| x += s}).to eq(a_string)
         expect(x).to eq('test' + a_string)
-        Demand::YIELD_DEFAULT = false
+        Demand::OPTIONS[:yield_default] = false
     end
 
     it "returns the yield result when Demand::RETURN_YIELD turned on" do
-        Demand::RETURN_YIELD = true
+        Demand::OPTIONS[:return_yield] = true
         expect(demand(a_string) {|s| s + 'test'}).to eq(a_string + 'test')
-        Demand::RETURN_YIELD = false
+        Demand::OPTIONS[:return_yield] = false
     end
 
 end
