@@ -1,13 +1,12 @@
 require 'active_support/core_ext/object/blank'
 require 'boolean'
-# require 'pry'
 
 module Demand
-    OPTIONS = {
-        yield_default: false,
-        return_yield: false
-    }
-    attr_accessor :OPTIONS
+	OPTIONS = {
+		yield_default: false,
+		return_yield: false
+	}
+	attr_accessor :OPTIONS
 end
 
 # Checks if a passed variable is present and as expected. If so, returns and optionally yields it. Otherwise, a default is returned. The check will fail for empty arrays, hashes and strings (including whitespace strings). If you want the check to pass just if the variable is nil, specify type = NilClass
@@ -23,46 +22,46 @@ end
 #
 def demand(var, default = nil, type = nil)
 
-    # If type specified, must either be a class or module
-    # Otherwise, get the class of whatever was passed
-    if (type != nil)
-        if (type.is_a?(Class) || type.is_a?(Module))
-            t = type
-        else
-            t = type.class
-        end
-    end
+	# If type specified, must either be a class or module
+	# Otherwise, get the class of whatever was passed
+	if (type != nil)
+		if (type.is_a?(Class) || type.is_a?(Module))
+			t = type
+		else
+			t = type.class
+		end
+	end
 
-    # Check the var
-    result = var; check = true
-    begin
-        # Edge case - you want the variable to be of type NilClass
-        if var == nil
-            unless t == NilClass
-                result = default; check = false
-            end
-        # Is the variable blank? - not including false
-        elsif !(var.present? || var == false) # Override false == blank
-            result = default; check = false
-        # Variable is not blank
-        # Do we need to check its class too?
-        elsif (t != nil)
-            unless var.is_a?(t)
-               result = default; check = false
-            end
-        end
-    rescue
-        result = default; check = false
-    end
+	# Check the var
+	result = var; check = true
+	begin
+		# Edge case - you want the variable to be of type NilClass
+		if var == nil
+			unless t == NilClass
+				result = default; check = false
+			end
+		# Is the variable blank? - not including false
+		elsif !(var.present? || var == false) # Override false == blank
+			result = default; check = false
+		# Variable is not blank
+		# Do we need to check its class too?
+		elsif (t != nil)
+			unless var.is_a?(t)
+			   result = default; check = false
+			end
+		end
+	rescue
+		result = default; check = false
+	end
 
-    # All checks have passed by this point
-    if block_given? && (check || Demand::OPTIONS[:yield_default])
-        if Demand::OPTIONS[:return_yield]
-            return yield(result)
-        else
-            yield(result)
-        end
-    end
-    return result
+	# All checks have passed by this point
+	if block_given? && (check || Demand::OPTIONS[:yield_default])
+		if Demand::OPTIONS[:return_yield]
+			return yield(result)
+		else
+			yield(result)
+		end
+	end
+	return result
 
 end
