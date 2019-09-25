@@ -45,10 +45,10 @@ def demand(var, default = nil, type = nil)
 			end
 		# Is the variable blank? - not including false
 		elsif (
-			( var.respond_to?(:nil?) && var.nil? )        || # responds to nil truthily
-			( var.is_a?(NilClass) )                   || # is a kind of nil
-			( var.respond_to?(:empty?) && var.empty? )    || # is empty/empty string
-			( var.is_a?(String) && var.strip.empty? )    # is just whitespace
+			( var.respond_to?(:nil?) && !!var.nil? )     || # responds to nil truthily
+			( var.is_a?(NilClass) )                      || # is a kind of nil
+			( var.respond_to?(:empty?) && !!var.empty? ) || # is empty/empty string
+			( var.is_a?(String) && var.strip.empty? )       # is just whitespace
 		)
 			# Variable is blank
 			result = default; check = false
