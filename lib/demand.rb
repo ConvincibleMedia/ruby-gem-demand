@@ -1,9 +1,10 @@
-require 'active_support/core_ext/object/blank'
 require 'boolean'
 
 module Demand
 	OPTIONS = {
+		# If true, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead.
 		yield_default: false,
+		# If true, the return value of the passed block (if run) will be the return value for the main method itself.
 		return_yield: false
 	}
 	attr_accessor :OPTIONS
@@ -33,21 +34,30 @@ def demand(var, default = nil, type = nil)
 	end
 
 	# Check the var
-	result = var; check = true
+	result = var; check = true # has the check passed?
 	begin
-		# Edge case - you want the variable to be of type NilClass
+		# Is the variable nil?
 		if var == nil
+			# Do you want the variable to be nil? (edge case)
 			unless t == NilClass
+				# No - so the check fails
 				result = default; check = false
 			end
 		# Is the variable blank? - not including false
-		elsif !(var.present? || var == false) # Override false == blank
+		elsif (
+			( var.respond_to?(:nil?) && var.nil? )        || # responds to nil truthily
+			( var.is_a?(NilClass) )                   || # is a kind of nil
+			( var.respond_to?(:empty?) && var.empty? )    || # is empty/empty string
+			( var.is_a?(String) && var.strip.empty? )    # is just whitespace
+		)
+			# Variable is blank
 			result = default; check = false
 		# Variable is not blank
-		# Do we need to check its class too?
+		# Has a class been specified that the variable must be a type of?
 		elsif (t != nil)
 			unless var.is_a?(t)
-			   result = default; check = false
+				# Variable is not of correct type
+				result = default; check = false
 			end
 		end
 	rescue

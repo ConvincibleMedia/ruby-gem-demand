@@ -15,7 +15,6 @@ Gem::Specification.new do |spec|
     spec.files         = Dir['lib/**/*.rb']
     spec.required_ruby_version = '>= 2.5.0'
 
-    spec.add_dependency 'activesupport', '~>5.2.2'
     spec.add_dependency 'boolean', '~>1.0'
 
     spec.add_development_dependency "bundler", "~> 2.0"
