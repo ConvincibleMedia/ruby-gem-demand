@@ -23,13 +23,19 @@ end
 #
 def demand(var, default = nil, type = nil)
 
-	# If type specified, must either be a class or module
-	# Otherwise, get the class of whatever was passed
 	if (type != nil)
+		# If type specified, must either be a class or module
 		if (type.is_a?(Class) || type.is_a?(Module))
 			t = type
 		else
+			# Otherwise, get the class of whatever was passed
 			t = type.class
+		end
+
+		# Is this an anonymous class (e.g. anonymous struct)? - not much use
+		if t.name.to_s == '' && type.superclass != nil
+			# Lets use the class it's a type of, instead (e.g. Struct)
+			t = type.superclass
 		end
 	end
 
