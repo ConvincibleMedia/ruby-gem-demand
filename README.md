@@ -28,11 +28,9 @@ demand(y, 'Not present') #=> 'Not present'
 
 By *present* here we mean that:
 
-* The variable is not equal to `nil`
-* If it is an Array or Hash, it isn't empty
-* If it is a String, it isn't empty or just whitespace
-
-(This uses ActiveSupport's `blank?` method, but overrides it evaluating `false` as blank.)
+* The variable is not equal to `nil` nor responds truthfully to `nil?`
+* If it is an Array or Hash, it isn't empty; nor does it respond truthfully to `empty?`
+* If it is a String, it isn't empty or just whitespace, i.e. if it is `.strip`ed, it won't just be empty
 
 If you actually want your variable to be `nil` (i.e. you want the default value when the variable is *not* nil), specify the class you're looking for as `NilClass`):
 
@@ -60,7 +58,7 @@ demand(y, 'Not the right type', Boolean) #=> false (that is, y)
 
 The type `Boolean` is also made available when using this gem (via the [Boolean](https://github.com/RISCfuture/boolean) gem). This has the effect that `true` and `false` include `Boolean`, so we can check if something `is_a?(Boolean)` which will pass just for `true` and `false` values.
 
-### If variable, yield and run block
+### If variable present, yield it to a block
 
 If a block is specified, this will run only if the variable passes all the conditions. The variable is yielded to the block and also still returned by the method.
 
@@ -68,16 +66,16 @@ If a block is specified, this will run only if the variable passes all the condi
 x = 5
 
 demand(x, nil, Integer) {|x| puts x * 2 } #=> returns: 5; puts: 10
-demand(x, nil, String) {|x| puts 'Hello' } #=> nil; puts is not run
+demand(x, nil, String) {|x| puts 'Hello' } #=> returns nil; puts is not run
 ```
 
 ## Options
 
-Not really recommended, but you can adjust how the `demand()` method works by setting `Demand::YIELD_DEFAULT` and `Demand::RETURN_YIELD`.
+Not really recommended, but you can adjust how the `demand()` method works by setting `Demand::OPTIONS[:yield_default] = true` and `Demand::OPTIONS[:return_yield] = true`.
 
-| Option        | Default | Explanation |
-| ------------- | ------- | ----------- |
-| YIELD_DEFAULT | `false` | If `true`, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
-| RETURN_YIELD  | `false` | If `true`, the return value of the passed block (if run) will be the return value for the main method itself. |
+| Option         | Default | Explanation |
+| -------------- | ------- | ----------- |
+| :yield_default | `false` | If `true`, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead. |
+| :return_yield  | `false` | If `true`, the return value of the passed block (if run) will be the return value for the main method itself. |
 
 Once set, these switches change how all further calls to `demand()` behave. The switches are included for flexibility to developer preferences, but use with caution: things could get confusing quickly. Probably if you feel like you need these, `demand()` may not be the right tool.
