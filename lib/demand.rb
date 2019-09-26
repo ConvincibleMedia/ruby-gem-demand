@@ -1,12 +1,13 @@
-require 'active_support/core_ext/object/blank'
 require 'boolean'
-# require 'pry'
 
 module Demand
-    YIELD_DEFAULT = false
-    RETURN_YIELD = false
-    attr_accessor :YIELD_DEFAULT
-    attr_accessor :RETURN_YIELD
+	OPTIONS = {
+		# If true, a passed block will still run if the presence check on your variable fails. The default value will be yielded to the block instead.
+		yield_default: false,
+		# If true, the return value of the passed block (if run) will be the return value for the main method itself.
+		return_yield: false
+	}
+	attr_accessor :OPTIONS
 end
 
 # Checks if a passed variable is present and as expected. If so, returns and optionally yields it. Otherwise, a default is returned. The check will fail for empty arrays, hashes and strings (including whitespace strings). If you want the check to pass just if the variable is nil, specify type = NilClass
@@ -22,46 +23,61 @@ end
 #
 def demand(var, default = nil, type = nil)
 
-    # If type specified, must either be a class or module
-    # Otherwise, get the class of whatever was passed
-    if (type != nil)
-        if (type.is_a?(Class) || type.is_a?(Module))
-            t = type
-        else
-            t = type.class
-        end
-    end
+	if (type != nil)
+		# If type specified, must either be a class or module
+		if (type.is_a?(Class) || type.is_a?(Module))
+			t = type
+		else
+			# Otherwise, get the class of whatever was passed
+			t = type.class
+		end
 
-    # Check the var
-    result = var; check = true
-    begin
-        # Edge case - you want the variable to be of type NilClass
-        if var == nil
-            unless t == NilClass
-                result = default; check = false
-            end
-        # Is the variable blank? - not including false
-        elsif !(var.present? || var == false) # Override false == blank
-            result = default; check = false
-        # Variable is not blank
-        # Do we need to check its class too?
-        elsif (t != nil)
-            unless var.is_a?(t)
-               result = default; check = false
-            end
-        end
-    rescue
-        result = default; check = false
-    end
+		# Is this an anonymous class (e.g. anonymous struct)? - not much use
+		if t.name.to_s == '' && type.superclass != nil
+			# Lets use the class it's a type of, instead (e.g. Struct)
+			t = type.superclass
+		end
+	end
 
-    # All checks have passed by this point
-    if block_given? && (check || Demand::YIELD_DEFAULT)
-        if Demand::RETURN_YIELD
-            return yield(result)
-        else
-            yield(result)
-        end
-    end
-    return result
+	# Check the var
+	result = var; check = true # has the check passed?
+	begin
+		# Is the variable nil?
+		if var == nil
+			# Do you want the variable to be nil? (edge case)
+			unless t == NilClass
+				# No - so the check fails
+				result = default; check = false
+			end
+		# Is the variable blank? - not including false
+		elsif (
+			( var.respond_to?(:nil?) && !!var.nil? )     || # responds to nil truthily
+			( var.is_a?(NilClass) )                      || # is a kind of nil
+			( var.respond_to?(:empty?) && !!var.empty? ) || # is empty/empty string
+			( var.is_a?(String) && var.strip.empty? )       # is just whitespace
+		)
+			# Variable is blank
+			result = default; check = false
+		# Variable is not blank
+		# Has a class been specified that the variable must be a type of?
+		elsif (t != nil)
+			unless var.is_a?(t)
+				# Variable is not of correct type
+				result = default; check = false
+			end
+		end
+	rescue
+		result = default; check = false
+	end
+
+	# All checks have passed by this point
+	if block_given? && (check || Demand::OPTIONS[:yield_default])
+		if Demand::OPTIONS[:return_yield]
+			return yield(result)
+		else
+			yield(result)
+		end
+	end
+	return result
 
 end
