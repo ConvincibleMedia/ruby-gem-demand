@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "demand"
+require 'demand/version'
 
 require 'ice_nine'
 require 'ice_nine/core_ext/object'
